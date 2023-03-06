@@ -1,6 +1,8 @@
 #include <SFML/Graphics.hpp>
-#include "PlayerTank.h"
 #include <iostream>
+
+#include "PlayerTank.h"
+#include "Map.h"
 
 int main()
 {
@@ -8,7 +10,9 @@ int main()
     const sf::Time TimePerFrame = sf::seconds(1.f / 60.f);
 
     try {
-        PlayerTank player;
+        Map::ParseCommon();
+        Map map1;
+        
         sf::Clock clock;
         sf::Time timeSinceLastUpdate = sf::Time::Zero;
         std::cout << TimePerFrame.asSeconds() << std::endl;
@@ -26,8 +30,8 @@ int main()
             while (timeSinceLastUpdate > TimePerFrame){
                 timeSinceLastUpdate -= TimePerFrame;
                 window.clear();
-                player.Update(TimePerFrame);
-                player.Render(window);
+                map1.Update(TimePerFrame);
+                map1.Render(window);
                 window.display();
             }
         }
