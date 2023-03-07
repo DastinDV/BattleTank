@@ -73,8 +73,8 @@ void Map::ParseMapData() {
 }
 
 
-void Map::Update(const sf::Time& dt) {
-	player.Update(dt);
+void Map::Update(const sf::Time& dt, sf::Event& event) {
+	player.Update(dt, event);
 }
 
 void Map::Render(sf::RenderWindow& window) const {

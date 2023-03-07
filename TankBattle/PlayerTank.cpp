@@ -1,4 +1,6 @@
 #include "PlayerTank.h"
+#include "Bullet.h"
+
 #include <stdexcept>
 #include <iostream>
 #include <algorithm>
@@ -13,20 +15,6 @@ void PlayerTank::Init() {
 	LoadImage(PATH);
 	SetPosition(posX, posY);
 }
-
-//void PlayerTank::LoadImage(const std::string path) {
-//	if (!this->texture.loadFromFile("../Assets/textures/PlayerTank.png")) {
-//		throw std::runtime_error("Failed to load texture for a player");
-//	}
-//
-//	this->sprite.setTexture(this->texture);
-//	this->width = sprite.getGlobalBounds().width;
-//	this->height = sprite.getGlobalBounds().height;
-//	this->sprite.setOrigin(width / 2, height / 2);
-//	this->posX = width / 2;
-//	this->posY = height / 2;
-//	this->sprite.setPosition(posX, posY);
-//}
 
 void PlayerTank::Rotate() {
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
@@ -122,11 +110,47 @@ void PlayerTank::Move(const sf::Time& dt) {
 	sprite.setPosition(posX, posY);
 }
 
-void PlayerTank::Update(const sf::Time& dt) {
+void PlayerTank::Shoot(const sf::Time& dt, sf::Event& event) {
+	if (!isShootPressed && sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
+		isShootPressed = true;
+		Bullet* bullet = new Bullet();
+		bullet->SetDirection(this->direction);
+		bullet->Rotate();
+		bullet->SetPosition(posX, posY);
+		bullet->SetMap(map);
+		bullets.push_back(bullet);
+		std::cout << "Shoot!" << std::endl;
+	}
+
+	if (event.type == event.KeyReleased) {
+		if (event.key.code == sf::Keyboard::Space)
+			isShootPressed = false;
+	}
+
+	//std::cout << "Bullet count " << bullets.size() << std::endl;
+	std::list<Bullet*>::iterator i = bullets.begin();
+	while (i != bullets.end())
+	{
+		bool isDead = (*i)->IsDead();
+		if (isDead) {
+			delete (*i);
+			bullets.erase(i++);
+		}
+		else {
+			(*i)->Update(dt, event);
+			++i;
+		}
+	}
+}
+
+void PlayerTank::Update(const sf::Time& dt, sf::Event& event) {
 	Rotate();
 	Move(dt);
+	Shoot(dt, event);
 }
 
 void PlayerTank::Render(sf::RenderWindow& window) const {
 	window.draw(sprite);
+	for (auto& bullet : bullets)
+		bullet->Render(window);
 }

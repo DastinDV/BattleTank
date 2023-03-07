@@ -9,7 +9,7 @@ public:
 	Map();
 	~Map();
 	static void ParseCommon();
-	void Update(const sf::Time& dt);
+	void Update(const sf::Time& dt, sf::Event& event);
 	void Render(sf::RenderWindow& window) const;
 
 private:

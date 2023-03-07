@@ -5,6 +5,7 @@ class IMovable {
 
 public:
 	void SetMap(const int* const map);
+	void SetDirection(sf::Vector2<int> direction);
 	virtual ~IMovable() {};
 
 protected:

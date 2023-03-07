@@ -10,6 +10,14 @@ void BaseUnit::SetPosition(const int posX, const int posY) {
 	this->posY = posY;
 };
 
+void BaseUnit::SetDeadFlag() {
+	this->isAlive = false;
+}
+
+bool BaseUnit::IsDead() {
+	return !this->isAlive;
+}
+
 int BaseUnit::GetSpriteWidth() const {
 	return width;
 }

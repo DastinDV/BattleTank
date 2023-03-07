@@ -30,7 +30,7 @@ int main()
             while (timeSinceLastUpdate > TimePerFrame){
                 timeSinceLastUpdate -= TimePerFrame;
                 window.clear();
-                map1.Update(TimePerFrame);
+                map1.Update(TimePerFrame, event);
                 map1.Render(window);
                 window.display();
             }
