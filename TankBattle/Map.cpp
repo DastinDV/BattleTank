@@ -56,7 +56,7 @@ void Map::ParseMapData() {
 		sf::Sprite tileSprite;
 
 		if (map[i] == 9)
-			player.SetPosition(xTilePos + (player.GetWidth() / 2), yTilePos);
+			player.SetPosition(xTilePos + (player.GetSpriteWidth() / 2), yTilePos);
 		if (idToTexture.count(map[i])) {
 			tileSprite.setTexture(*idToTexture[map[i]]);
 			tileSprite.setPosition(xTilePos, yTilePos);
