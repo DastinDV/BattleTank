@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+//#include "Map.h"
 
 class BaseUnit {
 
@@ -17,6 +18,7 @@ public:
 	virtual ~BaseUnit() {};
 protected:
 
+	//Map* pMap;
 	float posX, posY;
 	float width, height;
 	sf::Sprite sprite;

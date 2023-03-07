@@ -2,7 +2,7 @@
 #include <iostream>
 
 #include "PlayerTank.h"
-#include "Map.h"
+#include "GameWorld.h"
 
 int main()
 {
@@ -11,8 +11,9 @@ int main()
 
     try {
         Map::ParseCommon();
-        Map map1;
-        
+        Map* map1 = new Map();
+        GameWorld gameWorld(map1);
+
         sf::Clock clock;
         sf::Time timeSinceLastUpdate = sf::Time::Zero;
         std::cout << TimePerFrame.asSeconds() << std::endl;
@@ -30,8 +31,8 @@ int main()
             while (timeSinceLastUpdate > TimePerFrame){
                 timeSinceLastUpdate -= TimePerFrame;
                 window.clear();
-                map1.Update(TimePerFrame, event);
-                map1.Render(window);
+                gameWorld.Update(TimePerFrame, event);
+                gameWorld.Render(window);
                 window.display();
             }
         }

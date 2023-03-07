@@ -21,6 +21,8 @@ private:
 	virtual void Rotate() override;
 	virtual void Move(const sf::Time& dt) override;
 	void Shoot(const sf::Time& dt, sf::Event& event);
+	void UpdateBullets(const sf::Time& dt, sf::Event& event);
+
 	std::list<Bullet*> bullets;
 	bool isShootPressed = false;
 	const std::string PATH = "../Assets/textures/PlayerTank.png";

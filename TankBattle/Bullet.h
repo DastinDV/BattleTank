@@ -1,7 +1,9 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include <unordered_set>
 #include "IMovable.h"
 #include "BaseUnit.h"
+//#include "Map.h"
 
 class Bullet : public IMovable, public BaseUnit {
 public:
@@ -16,8 +18,10 @@ public:
 
 	virtual void Rotate() override;
 	virtual void Move(const sf::Time& dt) override;
-private:
 
+private:
+	//Map* map1;
 	void CheckForHit();
 	const std::string PATH = "../Assets/textures/bullet.png";
+	const std::unordered_set<int> cantDamageTiles = { 2 , 5, 6};
 };

@@ -10,7 +10,7 @@ PlayerTank::PlayerTank() {
 }
 
 void PlayerTank::Init() {
-	direction = { 0, 1 };
+	direction = { 0, -1 };
 	speed = 200.f;
 	LoadImage(PATH);
 	SetPosition(posX, posY);
@@ -42,6 +42,7 @@ void PlayerTank::Rotate() {
 
 void PlayerTank::Move(const sf::Time& dt) {
 
+	int* map = pMap->GetMap();
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
 		int mapX = posX / width;
 		int mapY = posY / height;
@@ -117,7 +118,7 @@ void PlayerTank::Shoot(const sf::Time& dt, sf::Event& event) {
 		bullet->SetDirection(this->direction);
 		bullet->Rotate();
 		bullet->SetPosition(posX, posY);
-		bullet->SetMap(map);
+		bullet->SetMap(pMap);
 		bullets.push_back(bullet);
 		std::cout << "Shoot!" << std::endl;
 	}
@@ -127,7 +128,10 @@ void PlayerTank::Shoot(const sf::Time& dt, sf::Event& event) {
 			isShootPressed = false;
 	}
 
-	//std::cout << "Bullet count " << bullets.size() << std::endl;
+	UpdateBullets(dt, event);
+}
+
+void PlayerTank::UpdateBullets(const sf::Time& dt, sf::Event& event) {
 	std::list<Bullet*>::iterator i = bullets.begin();
 	while (i != bullets.end())
 	{

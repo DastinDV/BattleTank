@@ -137,6 +137,7 @@
   <ItemGroup>
     <ClCompile Include="BaseUnit.cpp" />
     <ClCompile Include="Bullet.cpp" />
+    <ClCompile Include="GameWorld.cpp" />
     <ClCompile Include="IMovable.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Map.cpp" />
@@ -147,6 +148,7 @@
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="IMovable.h" />
     <ClInclude Include="Map.h" />
+    <ClInclude Include="GameWorld.h" />
     <ClInclude Include="PlayerTank.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

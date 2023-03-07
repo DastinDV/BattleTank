@@ -1,11 +1,23 @@
-#include "Map.h"
 #include <fstream>
 #include <sstream>
 #include <iostream>
 
+#include "Map.h"
+
 Map::Map() {
 	ParseMapData();
-	player.SetMap(this->map);
+}
+
+int* Map::GetMap() const {
+	return map;
+}
+
+sf::Vector2<int> Map::GetPlayerPosition() {
+	return initialPlayerPosition;
+}
+
+std::vector<sf::Sprite>& Map::GetMapTiles() {
+	return tiles;
 }
 
 std::unordered_map<int, std::string> Map::idToTextureName;
@@ -55,8 +67,11 @@ void Map::ParseMapData() {
 	for (int i = 0, k = 0; i < mapHeight * mapWidth; i++, k++) {
 		sf::Sprite tileSprite;
 
-		if (map[i] == 9)
-			player.SetPosition(xTilePos + (player.GetSpriteWidth() / 2), yTilePos);
+		if (map[i] == 9) {
+			initialPlayerPosition.x = xTilePos;
+			initialPlayerPosition.y = yTilePos;
+		}
+
 		if (idToTexture.count(map[i])) {
 			tileSprite.setTexture(*idToTexture[map[i]]);
 			tileSprite.setPosition(xTilePos, yTilePos);
@@ -72,15 +87,17 @@ void Map::ParseMapData() {
 	}
 }
 
+void Map::UpdateMapData(int index) {
+	if (index >= 0 && index < mapWidth * mapHeight)
+		tiles[index].setTexture(*idToTexture[0]);
+}
 
 void Map::Update(const sf::Time& dt, sf::Event& event) {
-	player.Update(dt, event);
 }
 
 void Map::Render(sf::RenderWindow& window) const {
 	for (auto& item : tiles)
 		window.draw(item);
-	player.Render(window);
 }
 
 Map::~Map() {
