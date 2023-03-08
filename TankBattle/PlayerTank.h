@@ -13,6 +13,7 @@ public:
 	PlayerTank();
 	virtual void Update(const sf::Time& dt, sf::Event& event) override;
 	virtual void Render(sf::RenderWindow& window) const override;
+	~PlayerTank();
 
 protected:
 	void Init() override;

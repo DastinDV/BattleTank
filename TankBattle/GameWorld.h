@@ -15,7 +15,7 @@ public:
 	Map* GetMap();
 	void Update(const sf::Time& dt, sf::Event& event);
 	void Render(sf::RenderWindow& window);
-
+	~GameWorld();
 private:
 	Map* pMap;
 	PlayerTank player;

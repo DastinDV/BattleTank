@@ -68,3 +68,7 @@ void GameWorld::Render(sf::RenderWindow& window) {
 		enemy->Render(window);
 	}
 }
+
+GameWorld::~GameWorld() {
+	delete pMap;
+}

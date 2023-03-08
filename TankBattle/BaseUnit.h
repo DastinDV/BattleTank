@@ -20,7 +20,6 @@ public:
 	virtual ~BaseUnit() {};
 protected:
 
-	//Map* pMap;
 	float posX, posY;
 	float prevX, prevY;
 	float width, height;

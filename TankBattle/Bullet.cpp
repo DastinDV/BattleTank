@@ -52,14 +52,14 @@ void Bullet::CheckForHit() {
 	else {
 		int index = mapY * 13 + mapX;
 		int* map = pMap->GetMap();
-		std::cout << "WhoShoot " << whoShoot << std::endl;
+		//std::cout << "WhoShoot " << whoShoot << std::endl;
 
-		if ((whoShoot == WhoShoot::AI && map[index] != 0 && map[index] != 9 && map[index] != 98) ||
-			(whoShoot == WhoShoot::Player && map[index] != 0 && map[index] != 9 && map[index] != 99)) {
+		if ((whoShoot == WhoShoot::AI && !whoShootToIgnoredTiles.at(WhoShoot::AI).count(map[index])) ||
+			(whoShoot == WhoShoot::Player && !whoShootToIgnoredTiles.at(WhoShoot::Player).count(map[index]))) {
 			//std::cout << map[index] << " " << index << std::endl;
 			SetDeadFlag();
 			if (!cantDamageTiles.count(map[index])) {
-				if (whoShoot == WhoShoot::Player && map[index] == 98) {
+				if (whoShoot == WhoShoot::Player && map[index] == 98) {	// Tank was killed. Update map.
 					map[index] = DEAD_FLAG;
 				} else map[index] = 0;
 				pMap->UpdateMapData(index, 0);

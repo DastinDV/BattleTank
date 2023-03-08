@@ -160,7 +160,7 @@ void PlayerTank::Shoot(const sf::Time& dt, sf::Event& event) {
 	if (!isShootPressed && sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
 		isShootPressed = true;
 		bullets.push_back(CreateBullet(WhoShoot::Player));
-		std::cout << "Shoot!" << std::endl;
+		//std::cout << "Shoot!" << std::endl;
 	}
 
 	if (event.type == event.KeyReleased) {
@@ -212,4 +212,12 @@ void PlayerTank::RenderBullets(sf::RenderWindow& window) const{
 void PlayerTank::Render(sf::RenderWindow& window) const {
 	window.draw(sprite);
 	RenderBullets(window);
+}
+
+PlayerTank::~PlayerTank() {
+	std::cout << "~PlayerTank" << std::endl;
+	for (auto& bullet : bullets) {
+		delete bullet;
+	}
+	bullets.clear();
 }

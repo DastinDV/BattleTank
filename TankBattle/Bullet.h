@@ -10,6 +10,15 @@ enum WhoShoot {
 	AI
 };
 
+struct WhoShootClassHash
+{
+	template <typename T>
+	std::size_t operator()(T t) const
+	{
+		return static_cast<std::size_t>(t);
+	}
+};
+
 class Bullet : public IMovable, public BaseUnit {
 public:
 	Bullet();
@@ -31,6 +40,11 @@ private:
 	void CheckForHit();
 	const std::string PATH = "../Assets/textures/bullet.png";
 	const std::unordered_set<int> cantDamageTiles = { 2, 5, 6 };
+	const std::unordered_map<WhoShoot, std::unordered_set<int>, WhoShootClassHash> whoShootToIgnoredTiles {
+		{ WhoShoot::AI, {0, 9, 98}},
+		{ WhoShoot::Player, {0, 9, 99}}
+	};
+
 	WhoShoot whoShoot = WhoShoot::Player;
 	const int DEAD_FLAG = -1;
 };
