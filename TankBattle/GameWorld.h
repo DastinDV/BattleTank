@@ -19,6 +19,6 @@ public:
 private:
 	Map* pMap;
 	PlayerTank player;
-	std::vector<AITank*> enemies;
+	std::list<AITank*> enemies;
 	std::mt19937 engine;
 };

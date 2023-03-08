@@ -11,7 +11,7 @@ public:
 	static void ParseCommon();
 	void Update(const sf::Time& dt, sf::Event& event);
 	void Render(sf::RenderWindow& window) const;
-	void UpdateMapData(int index);
+	void UpdateMapData(int index, int tileId);
 	int* GetMap() const;
 	sf::Vector2<int> GetPlayerPosition();
 	std::vector<sf::Sprite>& GetMapTiles();

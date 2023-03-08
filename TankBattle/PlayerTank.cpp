@@ -124,7 +124,12 @@ bool PlayerTank::MoveRight(const sf::Time& dt) {
 
 void PlayerTank::Move(const sf::Time& dt) {
 
-	int* map = pMap->GetMap();
+	int prevMapX = posX / width;
+	int prevMapY = posY / height;
+
+	int prevIndex = prevMapY * 13 + prevMapX;
+	pMap->GetMap()[prevIndex] = 99;
+
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
 		MoveLeft(dt);
 	}
@@ -138,6 +143,14 @@ void PlayerTank::Move(const sf::Time& dt) {
 		MoveDown(dt);
 	}
 
+	int mapX = posX / width;
+	int mapY = posY / height;
+
+	int index = mapY * 13 + mapX;
+	if (index != prevIndex) {
+		pMap->GetMap()[prevIndex] = 0;
+	}
+
 	posX = std::clamp(posX, 0 + width / 2, 13 * width - width / 2);
 	posY = std::clamp(posY, 0 + height / 2, 13 * height - height / 2);
 	sprite.setPosition(posX, posY);
@@ -146,7 +159,7 @@ void PlayerTank::Move(const sf::Time& dt) {
 void PlayerTank::Shoot(const sf::Time& dt, sf::Event& event) {
 	if (!isShootPressed && sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
 		isShootPressed = true;
-		bullets.push_back(CreateBullet());
+		bullets.push_back(CreateBullet(WhoShoot::Player));
 		std::cout << "Shoot!" << std::endl;
 	}
 
@@ -155,15 +168,16 @@ void PlayerTank::Shoot(const sf::Time& dt, sf::Event& event) {
 			isShootPressed = false;
 	}
 
-	UpdateBullets(dt, event);
+	//UpdateBullets(dt, event);
 }
 
-Bullet* PlayerTank::CreateBullet() {
+Bullet* PlayerTank::CreateBullet(WhoShoot whoShoot) {
 	Bullet* bullet = new Bullet();
 	bullet->SetDirection(this->direction);
 	bullet->Rotate();
 	bullet->SetPosition(posX, posY);
 	bullet->SetMap(pMap);
+	bullet->SetGunner(whoShoot);
 	return bullet;
 }
 
@@ -187,10 +201,15 @@ void PlayerTank::Update(const sf::Time& dt, sf::Event& event) {
 	Rotate();
 	Move(dt);
 	Shoot(dt, event);
+	UpdateBullets(dt, event);
+}
+
+void PlayerTank::RenderBullets(sf::RenderWindow& window) const{
+	for (auto& bullet : bullets)
+		bullet->Render(window);
 }
 
 void PlayerTank::Render(sf::RenderWindow& window) const {
 	window.draw(sprite);
-	for (auto& bullet : bullets)
-		bullet->Render(window);
+	RenderBullets(window);
 }

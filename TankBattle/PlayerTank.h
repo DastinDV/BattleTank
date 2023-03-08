@@ -20,17 +20,18 @@ protected:
 	virtual void Rotate() override;
 	virtual void Move(const sf::Time& dt) override;
 	void Shoot(const sf::Time& dt, sf::Event& event);
-	Bullet* CreateBullet();
+	Bullet* CreateBullet(WhoShoot whoShoot);
 
 	bool MoveUp(const sf::Time& dt);
 	bool MoveDown(const sf::Time& dt);
 	bool MoveLeft(const sf::Time& dt);
 	bool MoveRight(const sf::Time& dt);
-
-private:
 	void UpdateBullets(const sf::Time& dt, sf::Event& event);
+	void RenderBullets(sf::RenderWindow& window) const;
 
 	std::list<Bullet*> bullets;
+private:
+
 	bool isShootPressed = false;
 	const std::string PATH = "../Assets/textures/PlayerTank.png";
 	const std::unordered_set<int> walkableTiles = { 0, 9 };

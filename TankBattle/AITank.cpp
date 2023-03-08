@@ -1,5 +1,6 @@
 #include "AITank.h"
 #include "helper.h"
+#include "Bullet.h"
 
 #include <random>
 #include <fstream>
@@ -34,11 +35,12 @@ void AITank::Rotate() {
 
 void AITank::Move(const sf::Time& dt) {
 
-	/*int prevMapX = posX / width;
+	int prevMapX = posX / width;
 	int prevMapY = posY / height;
 
-	int prevIndex = prevMapX * 13 + prevMapY;
-	pMap->GetMap()[prevIndex] = 1;*/
+	int prevIndex = prevMapY * 13 + prevMapX;
+	if (pMap->GetMap()[prevIndex] == -1) { SetDeadFlag(); pMap->GetMap()[prevIndex] = 0; }
+	else pMap->GetMap()[prevIndex] = 98;
 
 	if (direction == sf::Vector2<int>{0, -1})
 		canMove = MoveUp(dt);
@@ -49,13 +51,13 @@ void AITank::Move(const sf::Time& dt) {
 	else if (direction == sf::Vector2<int>{-1, 0})
 		canMove = MoveLeft(dt);
 
-	/*int mapX = posX / width;
-	int mapY = prevY / height;
+	int mapX = posX / width;
+	int mapY = posY / height;
 
-	int index = mapX * 13 + mapY;
+	int index = mapY * 13 + mapX;
 	if (index != prevIndex) {
 		pMap->GetMap()[prevIndex] = 0;
-	}*/
+	}
 
 	if (!canMove) { ChangeRandomDirection(); canMove = true; };
 	if (posX < 0 + width / 2 || posX > 13 * width - width / 2) { ChangeRandomDirection(); canMove = true; };
@@ -64,16 +66,26 @@ void AITank::Move(const sf::Time& dt) {
 	posX = std::clamp(posX, 0 + width / 2, 13 * width - width / 2);
 	posY = std::clamp(posY, 0 + height / 2, 13 * height - height / 2);
 	sprite.setPosition(posX, posY);
+
+	passedTime += clock.getElapsedTime().asSeconds();
+	if (passedTime >= shootTime) {
+		std::cout << "Shoot!" << std::endl;
+		passedTime = 0;
+		clock.restart();
+		bullets.push_back(CreateBullet(WhoShoot::AI));
+	}
 }
 
 
 void AITank::Update(const sf::Time& dt, sf::Event& event) {
 	Rotate();
 	Move(dt);
+	UpdateBullets(dt, event);
 }
 
 void AITank::Render(sf::RenderWindow& window) const {
 	window.draw(sprite);
+	RenderBullets(window);
 }
 
 void AITank::SetLives(const int lives) {

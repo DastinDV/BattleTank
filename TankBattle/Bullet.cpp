@@ -1,7 +1,7 @@
-#include "Bullet.h"
-
 #include <iostream>
 #include <algorithm>
+
+#include "Bullet.h"
 
 Bullet::Bullet() {
 	Init();
@@ -10,6 +10,10 @@ Bullet::Bullet() {
 void Bullet::Init() {
 	speed = 300.f;
 	LoadImage(PATH);
+}
+
+void Bullet::SetGunner(WhoShoot whoShoot) {
+	this->whoShoot = whoShoot;
 }
 
 void Bullet::Update(const sf::Time & dt, sf::Event& event){
@@ -48,13 +52,17 @@ void Bullet::CheckForHit() {
 	else {
 		int index = mapY * 13 + mapX;
 		int* map = pMap->GetMap();
+		std::cout << "WhoShoot " << whoShoot << std::endl;
 
-		if (map[index] != 0 && map[index] != 9) {
-			std::cout << map[index] << " " << index << std::endl;
+		if ((whoShoot == WhoShoot::AI && map[index] != 0 && map[index] != 9 && map[index] != 98) ||
+			(whoShoot == WhoShoot::Player && map[index] != 0 && map[index] != 9 && map[index] != 99)) {
+			//std::cout << map[index] << " " << index << std::endl;
 			SetDeadFlag();
 			if (!cantDamageTiles.count(map[index])) {
-				map[index] = 0;
-				pMap->UpdateMapData(index);
+				if (whoShoot == WhoShoot::Player && map[index] == 98) {
+					map[index] = DEAD_FLAG;
+				} else map[index] = 0;
+				pMap->UpdateMapData(index, 0);
 				std::cout << "Hit something!" << std::endl;
 			}
 		}

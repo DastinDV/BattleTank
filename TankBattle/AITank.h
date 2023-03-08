@@ -37,7 +37,11 @@ private:
 	bool canMove = true;
 	static std::unordered_map<EnemyType, EnemyInf> enemyTypeToInf;
 
+	const int shootTime = 10;
+	int passedTime = 0;
+
 	std::mt19937 engine;
+	sf::Clock clock;
 };
 
 class TankCreator {

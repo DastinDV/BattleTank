@@ -87,9 +87,9 @@ void Map::ParseMapData() {
 	}
 }
 
-void Map::UpdateMapData(int index) {
-	if (index >= 0 && index < mapWidth * mapHeight)
-		tiles[index].setTexture(*idToTexture[0]);
+void Map::UpdateMapData(int index, int tileId) {
+	if (index >= 0 && index < (mapWidth * mapHeight) - 1)
+		tiles[index].setTexture(*idToTexture[tileId]);
 }
 
 void Map::Update(const sf::Time& dt, sf::Event& event) {

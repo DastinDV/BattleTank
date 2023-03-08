@@ -41,9 +41,24 @@ Map* GameWorld::GetMap() {
 void GameWorld::Update(const sf::Time& dt, sf::Event& event) {
 	pMap->Update(dt, event);
 	player.Update(dt, event);
-	for (auto enemy : enemies) {
-		enemy->Update(dt, event);
+
+	std::list<AITank*>::iterator i = enemies.begin();
+	while (i != enemies.end())
+	{
+		bool isDead = (*i)->IsDead();
+		if (isDead) {
+			delete (*i);
+			enemies.erase(i++);
+		}
+		else {
+			(*i)->Update(dt, event);
+			++i;
+		}
 	}
+
+	/*for (auto enemy : enemies) {
+		enemy->Update(dt, event);
+	}*/
 }
 
 void GameWorld::Render(sf::RenderWindow& window) {
