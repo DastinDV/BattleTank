@@ -1,0 +1,4 @@
+TankType    Path					   		Speed		Lives
+0 		../Assets/textures/EnemyTank.png 		250 		1
+1 		../Assets/textures/EnemyTankFast.png 	350 		1
+2 		../Assets/textures/EnemyTankStrong.png 	200 		3	

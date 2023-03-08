@@ -135,6 +135,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AITank.cpp" />
     <ClCompile Include="BaseUnit.cpp" />
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="GameWorld.cpp" />
@@ -144,8 +145,10 @@
     <ClCompile Include="PlayerTank.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AITank.h" />
     <ClInclude Include="BaseUnit.h" />
     <ClInclude Include="Bullet.h" />
+    <ClInclude Include="helper.h" />
     <ClInclude Include="IMovable.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="GameWorld.h" />

@@ -40,70 +40,102 @@ void PlayerTank::Rotate() {
 	
 }
 
+bool PlayerTank::MoveUp(const sf::Time& dt) {
+	int* map = pMap->GetMap();
+
+	int mapX = posX / width;
+	int mapY = posY / height;
+	mapY = mapY - 1;
+
+	int index = mapY * 13 + mapX;
+	if (!walkableTiles.count(map[index])) {
+		posY = std::max(posY + direction.y * speed * dt.asSeconds(),
+			mapY * height + height + height / 2);
+		return false;
+	}
+	else {
+		posX = (mapX * width) + width / 2;
+		posY += direction.y * speed * dt.asSeconds();
+	}
+	return true;
+}
+
+bool PlayerTank::MoveDown(const sf::Time& dt) {
+	int* map = pMap->GetMap();
+
+	int mapX = posX / width;
+	int mapY = posY / height;
+	mapY = mapY + 1;
+
+	int index = mapY * 13 + mapX;
+	if (!walkableTiles.count(map[index])) {
+		posY = std::min(posY + direction.y * speed * dt.asSeconds(),
+			mapY * height - height + height / 2);
+		return false;
+	}
+	else {
+		posX = (mapX * width) + width / 2;
+		posY += direction.y * speed * dt.asSeconds();
+	}
+	return true;
+}
+
+bool PlayerTank::MoveLeft(const sf::Time& dt) {
+	int* map = pMap->GetMap();
+
+	int mapX = posX / width;
+	int mapY = posY / height;
+	mapX = mapX - 1;
+
+	int index = mapY * 13 + mapX;
+
+	if (!walkableTiles.count(map[index])) {
+		posX = std::max(posX + direction.x * speed * dt.asSeconds(),
+			mapX * width + width + width / 2);
+		return false;
+	}
+	else {
+		posY = (mapY * height) + height / 2;
+		posX += direction.x * speed * dt.asSeconds();
+	}
+	return true;
+}
+
+bool PlayerTank::MoveRight(const sf::Time& dt) {
+	int* map = pMap->GetMap();
+
+	int mapX = posX / width;
+	int mapY = posY / height;
+	mapX = mapX + 1;
+
+	int index = mapY * 13 + mapX;
+
+	if (!walkableTiles.count(map[index])) {
+		posX = std::min(posX + direction.x * speed * dt.asSeconds(),
+			mapX * width - width + width / 2);
+		return false;
+	}
+	else {
+		posY = (mapY * height) + height / 2;
+		posX += direction.x * speed * dt.asSeconds();
+	}
+	return true;
+}
+
 void PlayerTank::Move(const sf::Time& dt) {
 
 	int* map = pMap->GetMap();
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
-		int mapX = posX / width;
-		int mapY = posY / height;
-		mapX = mapX - 1;
-
-		int index = mapY * 13 + mapX;
-
-		if (map[index] != 0 && map[index] != 9) {
-			posX = std::max(posX + direction.x * speed * dt.asSeconds(), 
-				mapX * width + width + width / 2);
-		}
-		else {
-			posY = (mapY * height) + height / 2;
-			posX += direction.x * speed * dt.asSeconds();
-		}
+		MoveLeft(dt);
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
-		int mapX = posX / width;
-		int mapY = posY / height;
-		mapX = mapX + 1;
-
-		int index = mapY * 13 + mapX;
-
-		if (map[index] != 0 && map[index] != 9) {
-			posX = std::min(posX + direction.x * speed * dt.asSeconds(), 
-				mapX * width - width + width / 2);
-		}
-		else {
-			posY = (mapY * height) + height / 2;
-			posX += direction.x * speed * dt.asSeconds();
-		}
+		MoveRight(dt);
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
-		int mapX = posX / width;
-		int mapY = posY / height;
-		mapY = mapY - 1;
-		
-		int index = mapY * 13 + mapX;
-		if (map[index] != 0 && map[index] != 9) {
-			posY = std::max(posY + direction.y * speed * dt.asSeconds(),
-				mapY * height + height + height / 2);
-		}
-		else {
-			posX = (mapX * width) + width / 2;
-			posY += direction.y * speed * dt.asSeconds();
-		}
+		MoveUp(dt);
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
-		int mapX = posX / width;
-		int mapY = posY / height;
-		mapY = mapY + 1;
-
-		int index = mapY * 13 + mapX;
-		if (map[index] != 0 && map[index] != 9) {
-			posY = std::min(posY + direction.y * speed * dt.asSeconds(),
-				mapY * height - height + height / 2);
-		}
-		else {
-			posX = (mapX * width) + width / 2;
-			posY += direction.y * speed * dt.asSeconds();
-		}
+		MoveDown(dt);
 	}
 
 	posX = std::clamp(posX, 0 + width / 2, 13 * width - width / 2);
@@ -114,12 +146,7 @@ void PlayerTank::Move(const sf::Time& dt) {
 void PlayerTank::Shoot(const sf::Time& dt, sf::Event& event) {
 	if (!isShootPressed && sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
 		isShootPressed = true;
-		Bullet* bullet = new Bullet();
-		bullet->SetDirection(this->direction);
-		bullet->Rotate();
-		bullet->SetPosition(posX, posY);
-		bullet->SetMap(pMap);
-		bullets.push_back(bullet);
+		bullets.push_back(CreateBullet());
 		std::cout << "Shoot!" << std::endl;
 	}
 
@@ -129,6 +156,15 @@ void PlayerTank::Shoot(const sf::Time& dt, sf::Event& event) {
 	}
 
 	UpdateBullets(dt, event);
+}
+
+Bullet* PlayerTank::CreateBullet() {
+	Bullet* bullet = new Bullet();
+	bullet->SetDirection(this->direction);
+	bullet->Rotate();
+	bullet->SetPosition(posX, posY);
+	bullet->SetMap(pMap);
+	return bullet;
 }
 
 void PlayerTank::UpdateBullets(const sf::Time& dt, sf::Event& event) {

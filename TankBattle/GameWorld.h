@@ -1,8 +1,10 @@
 #pragma once
-#include <queue>
+#include <vector>
+#include <random>
 
 #include "Map.h"
 #include "PlayerTank.h"
+#include "AITank.h"
 
 class GameWorld {
 
@@ -17,4 +19,6 @@ public:
 private:
 	Map* pMap;
 	PlayerTank player;
+	std::vector<AITank*> enemies;
+	std::mt19937 engine;
 };

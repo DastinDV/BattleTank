@@ -4,6 +4,11 @@ void BaseUnit::Init() {
 
 }
 
+void BaseUnit::SetSpriteBounds(float width, float height) {
+	this->width = width;
+	this->height = height;
+}
+
 void BaseUnit::SetPosition(const int posX, const int posY) {
 	sprite.setPosition(posX, posY);
 	this->posX = posX;
@@ -16,6 +21,10 @@ void BaseUnit::SetDeadFlag() {
 
 bool BaseUnit::IsDead() {
 	return !this->isAlive;
+}
+
+sf::Sprite& BaseUnit::GetSprite() {
+	return this->sprite;
 }
 
 int BaseUnit::GetSpriteWidth() const {
