@@ -1,16 +1,25 @@
 #include "GameWorld.h"
+#include "helper.h"
 
-GameWorld::GameWorld(Map* pMap) {
+GameWorld::GameWorld(sf::RenderWindow& window, Map* pMap) {
 	this->pMap = pMap;
-	Init();
+	ProvideSeed(engine, 12347);
+	Init(window);
 }
 
-void GameWorld::Init() {
+void GameWorld::Init(sf::RenderWindow& window) {
+	gameMapView = new sf::View();
+	gameMapView->setCenter(64 * 13 / 2, 64 * 13 / 2);
+	float aspectRatio = float(window.getSize().x) / float(window.getSize().y);
+	gameMapView->setSize(1080 * aspectRatio, 1080);
+	window.setView(*gameMapView);
+
 	player.SetPosition(
 		pMap->GetPlayerPosition().x + player.GetSpriteWidth() / 2,
 		pMap->GetPlayerPosition().y);
 	player.SetMap(pMap);
 
+	// Just for test
 	TankCreator::LoadData();
 	AITank* tank = TankCreator::CreateTank(TankCreator::GenRandomTankType(engine, AITank::TankId), 0, 0);
 	tank->SetMap(pMap);
@@ -71,4 +80,5 @@ void GameWorld::Render(sf::RenderWindow& window) {
 
 GameWorld::~GameWorld() {
 	delete pMap;
+	delete gameMapView;
 }

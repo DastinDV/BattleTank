@@ -12,7 +12,7 @@ int main()
     try {
         Map::ParseCommon();
         Map* map1 = new Map();
-        GameWorld gameWorld(map1);
+        GameWorld gameWorld(window, map1);
 
         sf::Clock clock;
         sf::Time timeSinceLastUpdate = sf::Time::Zero;
