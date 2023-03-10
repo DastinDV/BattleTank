@@ -33,7 +33,6 @@ void GameWorld::Init(sf::RenderWindow& window) {
 	tank2->SetMap(pMap);
 	enemies.push_back(tank2);
 
-	TankCreator::LoadData();
 	AITank* tank3 = TankCreator::CreateTank(TankCreator::GenRandomTankType(engine, AITank::TankId), 64 * 6, 64 * 4);
 	tank3->SetMap(pMap);
 	enemies.push_back(tank3);

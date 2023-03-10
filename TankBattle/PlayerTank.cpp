@@ -1,5 +1,6 @@
 #include "PlayerTank.h"
 #include "Bullet.h"
+#include "Logger.h"
 
 #include <stdexcept>
 #include <iostream>
@@ -160,6 +161,10 @@ void PlayerTank::Shoot(const sf::Time& dt, sf::Event& event) {
 	if (!isShootPressed && sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
 		isShootPressed = true;
 		bullets.push_back(CreateBullet(WhoShoot::Player));
+		Logger::GetInstance()->AppendToLog("Shoot! ")->AppendToLog("BulletsCount: ")
+			->AppendToLog(std::to_string(bullets.size()));
+		Logger::GetInstance()->Log();
+		Logger::GetInstance()->Clear();
 		//std::cout << "Shoot!" << std::endl;
 	}
 

@@ -37,7 +37,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 find_package(SFML 2.2 COMPONENTS system window graphics audio REQUIRED)
 
 # Compile executable
-add_executable(BattleTank TankBattle/Main.cpp TankBattle/IMovable.cpp TankBattle/BaseUnit.cpp TankBattle/Bullet.cpp TankBattle/PlayerTank.cpp TankBattle/AITank.cpp TankBattle/GameWorld.cpp TankBattle/Map.cpp)
+add_executable(BattleTank TankBattle/Main.cpp TankBattle/Logger.cpp TankBattle/IMovable.cpp TankBattle/BaseUnit.cpp TankBattle/Bullet.cpp TankBattle/PlayerTank.cpp TankBattle/AITank.cpp TankBattle/GameWorld.cpp TankBattle/Map.cpp)
 
 # Set include directory search paths
 target_include_directories(BattleTank 

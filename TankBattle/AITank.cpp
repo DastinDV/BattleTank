@@ -1,6 +1,7 @@
 #include "AITank.h"
 #include "helper.h"
 #include "Bullet.h"
+#include "Logger.h"
 
 #include <random>
 #include <fstream>
@@ -10,6 +11,9 @@
 AITank::AITank() {
 	TankId++;
 	std::cout << "TankId" << TankId << std::endl;
+	Logger::GetInstance()->AppendToLog("Created Enemy with ID: ")->AppendToLog(std::to_string(TankId));
+	Logger::GetInstance()->Log();
+	Logger::GetInstance()->Clear();
 }
 
 void AITank::Init() {
@@ -142,6 +146,11 @@ AITank* TankCreator::CreateTank(EnemyType type, int xPos, int yPos) {
 	tank->SetSpriteBounds(tank->GetSprite().getGlobalBounds().width, 
 						  tank->GetSprite().getGlobalBounds().height);
 	
+	Logger::GetInstance()->AppendToLog("Tank Position: ")->AppendToLog(std::to_string(xPos))
+		->AppendToLog(" ")->AppendToLog(std::to_string(yPos));
+	Logger::GetInstance()->Log();
+	Logger::GetInstance()->Clear();
+
 	return tank;
 }
 
