@@ -10,6 +10,7 @@ Bullet::Bullet() {
 void Bullet::Init() {
 	speed = 300.f;
 	LoadImage(PATH);
+	isAlive = true;
 }
 
 void Bullet::SetGunner(WhoShoot whoShoot) {

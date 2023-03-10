@@ -14,6 +14,7 @@ AITank::AITank() {
 	Logger::GetInstance()->AppendToLog("Created Enemy with ID: ")->AppendToLog(std::to_string(TankId));
 	Logger::GetInstance()->Log();
 	Logger::GetInstance()->Clear();
+	isAlive = true;
 }
 
 void AITank::Init() {
